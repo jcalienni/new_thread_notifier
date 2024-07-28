@@ -25,7 +25,7 @@ def main():
             for element in elements:
                 thread_title = element.find(lambda tag: tag.has_attr('id') and "thread_" in tag['id']).text
                 thread_date = element.find(lambda tag: tag.has_attr('title') and "Started by " in tag['title']).next_sibling
-                threads_list.append({'title': thread_title, 'date': thread_date})
+                threads_list.append({'title': thread_title})
 
             if str(threads_list) != last_threads_list:
                 send_telegram_notification("\n\n".join([str(d) for d in threads_list[:4]]))
@@ -35,6 +35,7 @@ def main():
 
         else:
             send_telegram_notification(f"Failed to retrieve the page. Status code: {response.status_code}")
+        print("waiting...")
         sleep(600)
 
 def send_telegram_notification(message: str):
